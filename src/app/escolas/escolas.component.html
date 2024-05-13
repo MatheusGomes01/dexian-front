@@ -1,0 +1,60 @@
+<div class="card flex justify-content-center">
+    <p-card>
+        <div class="card">
+            <!-- <p-toast></p-toast> -->
+            <button (click)="newSchool()" pButton type="button" class="felx justify-content-center button-add">Adicionar
+                escola</button>
+
+            <p-table #dt1 [value]="schools" [scrollable]="true" scrollHeight="400px" dataKey="id" editMode="row"
+                [tableStyle]="{'min-width': '50rem'}" [globalFilterFields]="['sDescricao']">
+
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="filterTable($event, dt1)"
+                                placeholder="Buscar escola" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome escola</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-school>
+                    <tr [pEditableRow]="school">
+                        <td>
+                            {{school.sDescricao}}
+                        </td>
+                        <td>
+                            <div class="flex align-items-center justify-content-center gap-2">
+                                <button (click)="setSchool(school)" pButton pRipple type="button" pInitEditableRow
+                                    icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-card>
+</div>
+
+<p-dialog [header]="editing ? 'Editar escola' : 'Adicionar escola'" [(visible)]="visible" [style]="{width: '50vw'}">
+    <div class="p-fluid grid formgrid">
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <input pInputText id="name" [(ngModel)]="school.sDescricao" />
+                <label htmlFor="name">Nome escola</label>
+            </span>
+        </div>
+
+        <div class="field col-12">
+            <button (click)="editing ? updateSchool(school) : addSchool(school)" pButton type="button"
+                class="p-button-rounded p-button-text felx justify-content-center">Salvar</button>
+        </div>
+    </div>
+</p-dialog>

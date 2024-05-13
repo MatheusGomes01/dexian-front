@@ -1,0 +1,117 @@
+<div class="card flex justify-content-center">
+    <p-card>
+        <div class="card">
+            <!-- <p-toast></p-toast> -->
+            <button (click)="newStudent()" pButton type="button"
+                class="felx justify-content-center button-add">Adicionar
+                aluno</button>
+
+            <p-table #dt1 [value]="students" [scrollable]="true" scrollHeight="400px" dataKey="id" editMode="row"
+                [tableStyle]="{'min-width': '50rem'}" [globalFilterFields]="['sNome', 'sCPF']">
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="filterTable($event, dt1)"
+                                placeholder="Buscar aluno" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome Aluno</th>
+                        <th>Data Nascimento Aluno</th>
+                        <th>CPF Aluno</th>
+                        <th>Endereço Aluno</th>
+                        <th>Celular Aluno</th>
+                        <th>Escola Aluno</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-student>
+                    <tr [pEditableRow]="student">
+                        <td>
+                            {{student.sNome}}
+                        </td>
+                        <td>
+                            {{student.dNascimento | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{student.sCPF | cpf}}
+                        </td>
+                        <td>
+                            {{student.sEndereco}}
+                        </td>
+                        <td>
+                            {{student.sCelular}}
+                        </td>
+                        <td>
+                            {{showSchoolStudent(student.iCodEscola)}}
+                        </td>
+                        <td>
+                            <div class="flex align-items-center justify-content-center gap-2">
+                                <button (click)="setStudent(student)" pButton pRipple type="button" pInitEditableRow
+                                    icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-card>
+</div>
+
+<p-dialog [header]="editing ? 'Editar aluno' : 'Adicionar aluno'" [(visible)]="visible" [style]="{width: '50vw'}">
+    <div class="p-fluid grid formgrid">
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <input pInputText id="name" [(ngModel)]="student.sNome" />
+                <label htmlFor="name">Nome</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <p-calendar [(ngModel)]="student.dNascimento" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                <label htmlFor="nascimento">Data de nascimento</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <p-inputMask mask="999.999.999-99" [(ngModel)]="student.sCPF"
+                    placeholder="999.999.999-99"></p-inputMask>
+                <label htmlFor="cpf">CPF</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <input pInputText id="endereco" [(ngModel)]="student.sEndereco" />
+                <label htmlFor="endereco">Endereço</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <p-inputMask mask="(99) 9 9999-9999" [(ngModel)]="student.sCelular"
+                    placeholder="(99) 9 9999-9999"></p-inputMask>
+                <label htmlFor="celular">Celular</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-6">
+            <span class="p-float-label">
+                <p-dropdown [options]="schools" [(ngModel)]="student.iCodEscola" optionLabel="sDescricao"
+                    optionValue="iCodEscola" [showClear]="true" placeholder="Selecione uma escola"></p-dropdown>
+                <label htmlFor="matriculaEscola">Escola</label>
+            </span>
+        </div>
+
+        <div class="field col-12">
+            <button (click)="editing ? updateStudent(student) : addStudent(student)" pButton type="button"
+                class="p-button-rounded p-button-text felx justify-content-center">Salvar</button>
+        </div>
+    </div>
+</p-dialog>

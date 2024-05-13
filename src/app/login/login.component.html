@@ -1,0 +1,22 @@
+<p-card header="Login" class="flex justify-content-center">
+    <div>
+        <div class="field col-6">
+            <span class="p-float-label">
+                <input pInputText id="username" [(ngModel)]="username" />
+                <label htmlFor="username">Usuario</label>
+            </span>
+        </div>
+
+        <div class="field col-6">
+            <span class="p-float-label">
+                <p-password [(ngModel)]="password" [feedback]="false"></p-password>
+                <label htmlFor="password">Senha</label>
+            </span>
+        </div>
+
+        <div class="field col-12 flex justify-content-end">
+            <button (click)="login()" pButton type="button"
+                class="p-button-rounded p-button-text felx justify-content-center">Login</button>
+        </div>
+    </div>
+</p-card>
